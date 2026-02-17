@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_kitchen_flutter_fe/pages/scanpage.dart';
 
 
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
+class ScanPage extends StatefulWidget {
+  const ScanPage({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -18,10 +17,10 @@ class HomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<HomePage> createState() => _MyHomePageState();
+  State<ScanPage> createState() => _MyScanPageState();
 }
 
-class _MyHomePageState extends State<HomePage> {
+class _MyScanPageState extends State<ScanPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,7 @@ class _MyHomePageState extends State<HomePage> {
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
+        // Here we take the value from the MyScanPage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
@@ -49,10 +48,10 @@ class _MyHomePageState extends State<HomePage> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    debugPrint('Cook pressed');
+                    debugPrint('Product Scan pressed');
                   },
                   child: const Text(
-                    'Cook',
+                    'Scan Product',
                     style: TextStyle(fontSize: 24),
                   ),
                 ),
@@ -61,16 +60,10 @@ class _MyHomePageState extends State<HomePage> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    debugPrint('Scan pressed');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                         const ScanPage(title: 'Scan')),
-                    );
+                    debugPrint('Scan Receipt pressed');
                   },
                   child: const Text(
-                    'Scan',
+                    'Scan Receipt',
                     style: TextStyle(fontSize: 24),
                   ),
                 ),
@@ -79,22 +72,10 @@ class _MyHomePageState extends State<HomePage> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    debugPrint('Pantry pressed');
+                    debugPrint('Custom Product pressed');
                   },
                   child: const Text(
-                    'Pantry',
-                    style: TextStyle(fontSize: 24),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    debugPrint('Nutrition pressed');
-                  },
-                  child: const Text(
-                    'Nutrition',
+                    'Custom Product',
                     style: TextStyle(fontSize: 24),
                   ),
                 ),

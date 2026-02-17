@@ -1,4 +1,4 @@
-import 'package:cloud_kitchen_flutter_fe/pages/homepage.dart';
+import 'package:cloud_kitchen_flutter_fe/config/router/app_router.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Cloud Kitchen',
       theme: ThemeData(
         brightness: Brightness.dark,
@@ -21,14 +21,16 @@ class MyApp extends StatelessWidget {
           ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            minimumSize: const Size(400, 100), // Width, Height
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            textStyle: const TextStyle(fontSize: 18),
+            textStyle: const TextStyle(fontSize: 40),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero
+              ),
           ),
         ),
           useMaterial3: true,
       ),
-      home: const HomePage(title: 'Cloud Kitchen'),
+      routerConfig: appRouter,
     );
   }
 }
