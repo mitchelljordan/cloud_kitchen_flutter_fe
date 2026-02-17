@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloud_kitchen_flutter_fe/pages/homepage.dart';
 import 'package:cloud_kitchen_flutter_fe/pages/scanpage.dart';
+import 'package:cloud_kitchen_flutter_fe/pages/pantrypage.dart';
+import 'package:cloud_kitchen_flutter_fe/pages/nutritionpage.dart';
+import 'package:cloud_kitchen_flutter_fe/pages/cookpage.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -17,14 +20,19 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const ScanPage(title: 'Scan'),
     ),
     GoRoute(
+      path: '/cook',
+      name: 'cook',
+      builder: (context, state) => const CookPage(title: 'Cook'),
+    ),
+    GoRoute(
       path: '/pantry',
       name: 'pantry',
-      builder: (context, state) => const HomePage(title: 'Pantry'),
+      builder: (context, state) => const PantryPage(title: 'Pantry'),
     ),
     GoRoute(
       path: '/nutrition',
       name: 'nutrition',
-      builder: (context, state) => const HomePage(title: 'Nutrition'),
+      builder: (context, state) => const NutritionPage(title: 'Nutrition'),
     ),
   ],
   errorBuilder: (context, state) => Scaffold(

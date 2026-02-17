@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_kitchen_flutter_fe/pages/scanpage.dart';
-
-
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -50,6 +48,7 @@ class _MyHomePageState extends State<HomePage> {
                 child: ElevatedButton(
                   onPressed: () {
                     debugPrint('Cook pressed');
+                    context.push('/cook');
                   },
                   child: const Text(
                     'Cook',
@@ -62,12 +61,7 @@ class _MyHomePageState extends State<HomePage> {
                 child: ElevatedButton(
                   onPressed: () {
                     debugPrint('Scan pressed');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                         const ScanPage(title: 'Scan')),
-                    );
+                    context.push('/scan');
                   },
                   child: const Text(
                     'Scan',
@@ -80,6 +74,7 @@ class _MyHomePageState extends State<HomePage> {
                 child: ElevatedButton(
                   onPressed: () {
                     debugPrint('Pantry pressed');
+                    context.push('/pantry');
                   },
                   child: const Text(
                     'Pantry',
@@ -92,6 +87,7 @@ class _MyHomePageState extends State<HomePage> {
                 child: ElevatedButton(
                   onPressed: () {
                     debugPrint('Nutrition pressed');
+                    context.push('/nutrition');
                   },
                   child: const Text(
                     'Nutrition',
