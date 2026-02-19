@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class CookPage extends StatefulWidget {
-  const CookPage({super.key, required this.title});
+class RecipePage extends StatefulWidget {
+  const RecipePage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<CookPage> createState() => _MyCookPageState();
+  State<RecipePage> createState() => _MyRecipePageState();
 }
 
-class _MyCookPageState extends State<CookPage> {
+class _MyRecipePageState extends State<RecipePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
