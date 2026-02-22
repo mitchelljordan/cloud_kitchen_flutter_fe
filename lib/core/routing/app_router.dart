@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloud_kitchen_flutter_fe/features/home/homepage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/scan/scanpage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/pantry/pantrypage.dart';
-import 'package:cloud_kitchen_flutter_fe/features/nutrition/nutritionpage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/recipe/recipepage.dart';
-
+import 'package:cloud_kitchen_flutter_fe/core/widgets/app_scaffold.dart';
+import 'package:cloud_kitchen_flutter_fe/features/profile/profilepage.dart';
 /* 
 // Description: This is where all navagtion for the  page is defined.
 // Navigation rules for go_router:
@@ -20,36 +20,41 @@ import 'package:cloud_kitchen_flutter_fe/features/recipe/recipepage.dart';
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
   routes: [
-    GoRoute(
-      path: '/',
-      name: 'home',
-      builder: (context, state) => const HomePage(title: 'Cloud Kitchen'),
-    ),
-    GoRoute(
-      path: '/scan',
-      name: 'scan',
-      builder: (context, state) => const ScanPage(title: 'Scan'),
-    ),
-    GoRoute(
-      path: '/recipe',
-      name: 'recipe',
-      builder: (context, state) => const RecipePage(title: 'Recipe'),
-    ),
-    GoRoute(
-      path: '/pantry',
-      name: 'pantry',
-      builder: (context, state) => const PantryPage(title: 'Pantry'),
-    ),
-    GoRoute(
-      path: '/nutrition',
-      name: 'nutrition',
-      builder: (context, state) => const NutritionPage(title: 'Nutrition'),
+    ShellRoute(
+      builder: (context, state, child) {
+        return AppScaffold(child: child);
+      },
+      routes: [
+        GoRoute(
+          path: '/',
+          name: 'home',
+          builder: (context, state) => const HomePage(),
+        ),
+
+        GoRoute(
+          path: '/scan',
+          name: 'scan',
+          builder: (context, state) => const ScanPage(title: 'Scan'),
+        ),
+
+        GoRoute(
+          path: '/pantry',
+          name: 'pantry',
+          builder: (context, state) => const PantryPage(title: 'Pantry'),
+        ),
+
+        GoRoute(
+          path: '/profile',
+          name: 'profile',
+          builder: (context, state) => const ProfilePage(title: 'Profile'),
+        ),
+
+        GoRoute(
+          path: '/recipe',
+          name: 'recipe',
+          builder: (context, state) => const RecipePage(title: 'Recipes'),
+        ),
+      ],
     ),
   ],
-  errorBuilder: (context, state) => Scaffold(
-    appBar: AppBar(title: const Text('Page Not Found')),
-    body: Center(
-      child: Text('No route defined for ${state.uri.toString()}'),
-    ),
-  ),
 );
