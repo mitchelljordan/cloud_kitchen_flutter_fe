@@ -13,29 +13,22 @@ class HomePage extends StatelessWidget {
           const SizedBox(height: 8),
           Expanded(
             child: ElevatedButton(
-              onPressed: () => context.push('/recipe'),
+              onPressed: () => context.go('/recipe'),
               child: const Text('Recipe', style: TextStyle(fontSize: 24)),
             ),
           ),
           const SizedBox(height: 8),
           Expanded(
             child: ElevatedButton(
-              onPressed: () => context.push('/scan'),
+              onPressed: () => context.go('/scan'),
               child: const Text('Scan', style: TextStyle(fontSize: 24)),
             ),
           ),
           const SizedBox(height: 8),
           Expanded(
             child: ElevatedButton(
-              onPressed: () => context.push('/pantry'),
+              onPressed: () => context.go('/pantry'),
               child: const Text('Pantry', style: TextStyle(fontSize: 24)),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Expanded(
-            child: ElevatedButton(
-              onPressed: () => context.push('/profile'),
-              child: const Text('Profile', style: TextStyle(fontSize: 24)),
             ),
           ),
           const SizedBox(height: 8),

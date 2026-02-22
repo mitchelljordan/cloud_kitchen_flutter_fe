@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const SafeArea(
       child: Center(
-        child: Text('Profile Page', style: TextStyle(fontSize: 24)),
+        child: Text('Settings Page', style: TextStyle(fontSize: 24)),
       ),
     );
   }

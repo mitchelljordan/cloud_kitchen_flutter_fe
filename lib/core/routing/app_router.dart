@@ -4,8 +4,10 @@ import 'package:cloud_kitchen_flutter_fe/features/home/homepage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/scan/scanpage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/pantry/pantrypage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/recipe/recipepage.dart';
-import 'package:cloud_kitchen_flutter_fe/core/widgets/app_scaffold.dart';
 import 'package:cloud_kitchen_flutter_fe/features/profile/profilepage.dart';
+import 'package:cloud_kitchen_flutter_fe/features/settings/settingspage.dart';
+import 'package:cloud_kitchen_flutter_fe/core/widgets/app_scaffold.dart';
+
 /* 
 // Description: This is where all navagtion for the  page is defined.
 // Navigation rules for go_router:
@@ -25,34 +27,28 @@ final GoRouter appRouter = GoRouter(
         return AppScaffold(child: child);
       },
       routes: [
-        GoRoute(
-          path: '/',
-          name: 'home',
-          builder: (context, state) => const HomePage(),
-        ),
+        GoRoute(path: '/', builder: (context, state) => const HomePage()),
 
-        GoRoute(
-          path: '/scan',
-          name: 'scan',
-          builder: (context, state) => const ScanPage(title: 'Scan'),
-        ),
+        GoRoute(path: '/scan', builder: (context, state) => const ScanPage()),
 
         GoRoute(
           path: '/pantry',
-          name: 'pantry',
-          builder: (context, state) => const PantryPage(title: 'Pantry'),
+          builder: (context, state) => const PantryPage(),
         ),
 
         GoRoute(
           path: '/profile',
-          name: 'profile',
-          builder: (context, state) => const ProfilePage(title: 'Profile'),
+          builder: (context, state) => const ProfilePage(),
         ),
 
         GoRoute(
           path: '/recipe',
-          name: 'recipe',
-          builder: (context, state) => const RecipePage(title: 'Recipes'),
+          builder: (context, state) => const RecipePage(),
+        ),
+
+        GoRoute(
+          path: '/settings',
+          builder: (context, state) => const SettingsPage(),
         ),
       ],
     ),

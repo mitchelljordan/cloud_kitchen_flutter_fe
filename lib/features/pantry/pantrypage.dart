@@ -1,23 +1,12 @@
 import 'package:flutter/material.dart';
 
-class PantryPage extends StatefulWidget {
-  const PantryPage({super.key, required this.title});
-  final String title;
-  @override
-  State<PantryPage> createState() => _MyPantryPageState();
-}
+class PantryPage extends StatelessWidget {
+  const PantryPage({super.key});
 
-class _MyPantryPageState extends State<PantryPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: const Center(
-        child: Text('Pantry Page'),
-      ),
+    return const SafeArea(
+      child: Center(child: Text('Pantry Page', style: TextStyle(fontSize: 24))),
     );
   }
 }

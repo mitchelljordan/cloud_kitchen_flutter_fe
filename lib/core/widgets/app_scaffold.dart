@@ -9,10 +9,9 @@ class AppScaffold extends StatelessWidget {
   int _getIndex(BuildContext context) {
     final location = GoRouterState.of(context).uri.toString();
 
-    if (location.startsWith('/scan')) return 1;
-    if (location.startsWith('/pantry')) return 2;
-    if (location.startsWith('/profile')) return 3;
-    if (location.startsWith('/recipe')) return 4;
+    if (location.startsWith('/recipe')) return 1;
+    if (location.startsWith('/profile')) return 2;
+    if (location.startsWith('/settings')) return 3;
 
     return 0; // home
   }
@@ -23,18 +22,31 @@ class AppScaffold extends StatelessWidget {
         context.go('/');
         break;
       case 1:
-        context.go('/scan');
-        break;
-      case 2:
-        context.go('/pantry');
-        break;
-      case 3:
-        context.go('/profile');
-        break;
-      case 4:
         context.go('/recipe');
         break;
+      case 2:
+        context.go('/profile');
+        break;
+      case 3:
+        context.go('/settings');
+        break;
     }
+  }
+
+  // NEW: Dynamic AppBar title based on route
+  String _getTitle(BuildContext context) {
+    final location = GoRouterState.of(context).uri.toString();
+
+    // on navbar
+    if (location.startsWith('/recipe')) return 'Recipe';
+    if (location.startsWith('/profile')) return 'Profile';
+    if (location.startsWith('/settings')) return 'Settings';
+
+    // not on navbar
+    if (location.startsWith('/scan')) return 'Scan';
+    if (location.startsWith('/pantry')) return 'Pantry';
+
+    return 'Cloud Kitchen'; // Home
   }
 
   @override
@@ -42,6 +54,7 @@ class AppScaffold extends StatelessWidget {
     final selectedIndex = _getIndex(context);
 
     return Scaffold(
+      appBar: AppBar(title: Text(_getTitle(context))),
       body: child,
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex,
@@ -53,24 +66,19 @@ class AppScaffold extends StatelessWidget {
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(Icons.qr_code_scanner_outlined),
-            selectedIcon: Icon(Icons.qr_code_scanner),
-            label: 'Scan',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.kitchen_outlined),
-            selectedIcon: Icon(Icons.kitchen),
-            label: 'Pantry',
-          ),
-          NavigationDestination(
             icon: Icon(Icons.restaurant_menu_outlined),
             selectedIcon: Icon(Icons.restaurant_menu),
-            label: 'Recipes',
+            label: 'Favorites',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline),
             selectedIcon: Icon(Icons.person),
             label: 'Profile',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.menu),
+            selectedIcon: Icon(Icons.menu),
+            label: 'Settings',
           ),
         ],
       ),
