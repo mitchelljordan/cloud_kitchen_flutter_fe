@@ -7,6 +7,7 @@ import 'package:cloud_kitchen_flutter_fe/features/recipe/recipepage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/profile/profilepage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/settings/settingspage.dart';
 import 'package:cloud_kitchen_flutter_fe/core/widgets/app_scaffold.dart';
+import 'package:cloud_kitchen_flutter_fe/features/login/loginpage.dart';
 
 /* 
 // Description: This is where all navagtion for the  page is defined.
@@ -49,6 +50,11 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/settings',
           builder: (context, state) => const SettingsPage(),
+        ),
+
+        GoRoute(
+          path: '/loginpage',
+          builder: (context, state) => const LoginPage(),
         ),
       ],
     ),
