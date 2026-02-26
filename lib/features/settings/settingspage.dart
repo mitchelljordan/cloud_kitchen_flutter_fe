@@ -8,7 +8,6 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
       ),
       body: SafeArea(
         child: Padding(
@@ -18,7 +17,7 @@ class SettingsPage extends StatelessWidget {
               const SizedBox(height: 8),
 
               const Text(
-                'Settings Page',
+                'Settings:',
                 style: TextStyle(fontSize: 24),
               ),
 
