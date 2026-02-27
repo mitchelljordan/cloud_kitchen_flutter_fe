@@ -23,6 +23,11 @@ import 'package:cloud_kitchen_flutter_fe/features/login/loginpage.dart';
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
   routes: [
+    GoRoute(
+      path: '/loginpage',
+      builder: (context, state) => const LoginPage(),
+    ),
+    
     ShellRoute(
       builder: (context, state, child) {
         return AppScaffold(child: child);
@@ -50,11 +55,6 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/settings',
           builder: (context, state) => const SettingsPage(),
-        ),
-
-        GoRoute(
-          path: '/loginpage',
-          builder: (context, state) => const LoginPage(),
         ),
       ],
     ),
