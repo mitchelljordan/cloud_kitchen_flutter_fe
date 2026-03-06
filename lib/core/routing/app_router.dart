@@ -8,6 +8,7 @@ import 'package:cloud_kitchen_flutter_fe/features/profile/profilepage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/settings/settingspage.dart';
 import 'package:cloud_kitchen_flutter_fe/core/widgets/app_scaffold.dart';
 import 'package:cloud_kitchen_flutter_fe/features/login/loginpage.dart';
+import 'package:cloud_kitchen_flutter_fe/features/scan/camera/scanproductpage.dart';
 
 /* 
 // Description: This is where all navagtion for the  page is defined.
@@ -23,11 +24,13 @@ import 'package:cloud_kitchen_flutter_fe/features/login/loginpage.dart';
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
   routes: [
+    GoRoute(path: '/loginpage', builder: (context, state) => const LoginPage()),
+
     GoRoute(
-      path: '/loginpage',
-      builder: (context, state) => const LoginPage(),
+      path: '/ScanProduct',
+      builder: (context, state) => const ScanProductPage(),
     ),
-    
+
     ShellRoute(
       builder: (context, state, child) {
         return AppScaffold(child: child);

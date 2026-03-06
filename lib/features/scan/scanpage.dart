@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ScanPage extends StatelessWidget {
   const ScanPage({super.key});
@@ -13,6 +14,7 @@ class ScanPage extends StatelessWidget {
           Expanded(
             child: ElevatedButton(
               onPressed: () {
+                context.push('/ScanProduct');
                 debugPrint('Product Scan pressed');
               },
               child: const Text('Scan Product', style: TextStyle(fontSize: 24)),
