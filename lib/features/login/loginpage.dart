@@ -1,7 +1,7 @@
-import 'dart:convert';
+import 'package:cloud_kitchen_flutter_fe/core/services/token_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
+import 'package:cloud_kitchen_flutter_fe/features/auth/data/authservice.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,26 +24,20 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      final response = await http.post(
-        Uri.parse("$baseUrl/auth/login"),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "username": _usernameController.text.trim(),
-          "password": _passwordController.text.trim(),
-        }),
+      final authService = AuthService();
+
+      final data = await authService.login(
+        username: _usernameController.text.trim(),
+        password: _passwordController.text.trim(),
       );
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        print(data);
+      print("LOGIN RESPONSE: $data");
 
-        if (!mounted) return;
-        context.go('/');
-      } else {
-        _showError("Invalid username or password");
-      }
+      if (!mounted) return;
+
+      context.go('/');
     } catch (e) {
-      _showError("Unable to connect to server");
+      _showError("Invalid username or password");
     }
 
     setState(() {
@@ -53,9 +47,9 @@ class _LoginPageState extends State<LoginPage> {
 
   void _showError(String message) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -68,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    backgroundColor: const Color(0xFF1E3A8A), // dark blue
+      backgroundColor: const Color(0xFF1E3A8A), // dark blue
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
@@ -157,13 +151,23 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         const Text("Don’t have an account? "),
                         TextButton(
-                          onPressed: () {},
-                          child: const Text("Sign up"),
+                          onPressed: () {
+                            context.go('/register');
+                          },
+                          child: const Text("Register"),
                         ),
                       ],
                     ),
 
                     const SizedBox(height: 40),
+
+                    ElevatedButton(
+                      onPressed: () async {
+                        final token = await TokenStorage.getToken();
+                        print("TOKEN FROM STORAGE: $token");
+                      },
+                      child: const Text("Check Token"),
+                    ),
                   ],
                 ),
               ),

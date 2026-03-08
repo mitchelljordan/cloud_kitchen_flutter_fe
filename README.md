@@ -2,6 +2,9 @@
 
 A new Flutter project.
 
+make sure developer mode is enabled run -> start ms-settings:developers to get this flutter_secure_storage
+run this -> flutter pub get
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
