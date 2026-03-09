@@ -10,10 +10,11 @@ import 'package:cloud_kitchen_flutter_fe/core/widgets/app_scaffold.dart';
 import 'package:cloud_kitchen_flutter_fe/features/login/loginpage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/scan/camera/scanproductpage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/register/registerpage.dart';
+import 'package:cloud_kitchen_flutter_fe/core/services/token_storage.dart';
 
 /* 
 // Description: This is where all navagtion for the  page is defined.
-// Navigation rules for go_router:
+// Navigation rules for go_router:A
 // context.__() = navigate to a page is how you will call nav from UI
 // push() = add page (shows back button)
 // go()   = replace stack (no back button)
@@ -24,6 +25,27 @@ import 'package:cloud_kitchen_flutter_fe/features/register/registerpage.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
+
+  redirect: (context, state) async {
+    final token = await TokenStorage.getToken();
+
+    final loggingIn =
+        state.matchedLocation == '/loginpage' ||
+        state.matchedLocation == '/register';
+
+    // If not logged in, send to login
+    if (token == null && !loggingIn) {
+      return '/loginpage';
+    }
+
+    // If already logged in, prevent going back to login/register
+    if (token != null && loggingIn) {
+      return '/';
+    }
+
+    return null;
+  },
+
   routes: [
     GoRoute(path: '/loginpage', builder: (context, state) => const LoginPage()),
 

@@ -158,16 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 40),
-
-                    ElevatedButton(
-                      onPressed: () async {
-                        final token = await TokenStorage.getToken();
-                        print("TOKEN FROM STORAGE: $token");
-                      },
-                      child: const Text("Check Token"),
-                    ),
                   ],
                 ),
               ),
