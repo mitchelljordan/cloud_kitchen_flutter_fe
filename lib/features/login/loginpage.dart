@@ -1,4 +1,3 @@
-import 'package:cloud_kitchen_flutter_fe/core/services/token_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloud_kitchen_flutter_fe/features/auth/data/authservice.dart';
@@ -13,8 +12,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  static const String baseUrl = "http://10.0.2.2:8000";
 
   bool _isLoading = false;
 

@@ -11,6 +11,7 @@ import 'package:cloud_kitchen_flutter_fe/features/login/loginpage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/scan/camera/scanproductpage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/register/registerpage.dart';
 import 'package:cloud_kitchen_flutter_fe/core/services/token_storage.dart';
+import 'package:cloud_kitchen_flutter_fe/features/scan/createproduct/createproductpage.dart';
 
 /* 
 // Description: This is where all navagtion for the  page is defined.
@@ -86,6 +87,11 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/settings',
           builder: (context, state) => const SettingsPage(),
+        ),
+
+        GoRoute(
+          path: '/createproduct',
+          builder: (context, state) => const CreateProductPage(),
         ),
       ],
     ),
