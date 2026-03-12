@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class RecipePage extends StatelessWidget {
   const RecipePage({super.key});
@@ -25,7 +26,7 @@ class RecipePage extends StatelessWidget {
           Expanded(
             child: ElevatedButton(
               onPressed: () {
-                debugPrint('Search Recipes pressed');
+                context.go('/searchrecipes');
               },
               child: const Text(
                 'Search Recipes',

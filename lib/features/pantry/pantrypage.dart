@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_kitchen_flutter_fe/core/services/pantry_service.dart';
 import '../../models/pantry_item.dart';
 import 'widgets/pantry_list.dart';
+import '../../core/services/recipe_services.dart';
+import '../../models/recipe.dart';
+import 'package:go_router/go_router.dart';
 
 class PantryPage extends StatefulWidget {
   const PantryPage({super.key});
@@ -14,7 +17,6 @@ class _PantryPageState extends State<PantryPage> {
   List<PantryItem> items = [];
   bool loading = true;
 
-  // NEW: selected pantry ids
   Set<String> selectedIds = {};
 
   @override
@@ -45,7 +47,6 @@ class _PantryPageState extends State<PantryPage> {
     });
   }
 
-  // NEW: toggle selection
   void toggleSelection(String id) {
     setState(() {
       if (selectedIds.contains(id)) {
@@ -56,20 +57,32 @@ class _PantryPageState extends State<PantryPage> {
     });
   }
 
-  // NEW: generate recipe request
-  void generateRecipe() {
-    List<String> idsToSend;
+  Future<void> generateRecipe() async {
+    List<int> ids;
 
     if (selectedIds.isEmpty) {
-      idsToSend = items.map((e) => e.id).toList();
+      ids = items.map((e) => int.parse(e.id)).toList();
     } else {
-      idsToSend = selectedIds.toList();
+      ids = selectedIds.map((e) => int.parse(e)).toList();
     }
 
-    print("Sending pantry IDs: $idsToSend");
+    try {
+      final data = selectedIds.isEmpty
+          ? await RecipeService.getRecipesFromPantry()
+          : await RecipeService.getRecipesByIngredients(ids);
 
-    // Example request placeholder
-    // RecipeService.generateRecipe(idsToSend);
+      final recipes = data.map<Recipe>((e) => Recipe.fromJson(e)).toList();
+
+      if (!mounted) return;
+
+      GoRouter.of(context).push('/searchrecipes', extra: recipes);
+    } catch (e) {
+      print(e);
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Failed to load recipes")));
+    }
   }
 
   @override
@@ -88,7 +101,6 @@ class _PantryPageState extends State<PantryPage> {
         selectedIds: selectedIds,
       ),
 
-      // NEW: floating recipe button
       floatingActionButton: FloatingActionButton(
         onPressed: generateRecipe,
         child: const Icon(Icons.restaurant_menu),

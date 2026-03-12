@@ -1,4 +1,5 @@
 //import 'package:flutter/material.dart';
+import 'package:cloud_kitchen_flutter_fe/models/recipe.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloud_kitchen_flutter_fe/features/home/homepage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/scan/scanpage.dart';
@@ -12,6 +13,7 @@ import 'package:cloud_kitchen_flutter_fe/features/scan/camera/scanproductpage.da
 import 'package:cloud_kitchen_flutter_fe/features/register/registerpage.dart';
 import 'package:cloud_kitchen_flutter_fe/core/services/token_storage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/scan/addpantryitem/addpantryitempage.dart';
+import 'package:cloud_kitchen_flutter_fe/features/recipe/searchrecipe/searchrecipepage.dart';
 
 /* 
 // Description: This is where all navagtion for the  page is defined.
@@ -92,6 +94,14 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/addpantryitem',
           builder: (context, state) => const AddPantryItemPage(),
+        ),
+
+        GoRoute(
+          path: '/searchrecipes',
+          builder: (context, state) {
+            final recipes = state.extra as List<Recipe>? ?? [];
+            return SearchRecipePage(recipes: recipes);
+          },
         ),
       ],
     ),
