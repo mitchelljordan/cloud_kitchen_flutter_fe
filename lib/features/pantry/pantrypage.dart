@@ -58,36 +58,28 @@ class _PantryPageState extends State<PantryPage> {
   }
 
   Future<void> generateRecipe() async {
-    List<int> ids;
 
+    // If nothing selected → just open search page
     if (selectedIds.isEmpty) {
-      ids = items.map((e) => e.productId).toSet().toList();
-    } else {
-      ids = items
-          .where((item) => selectedIds.contains(item.id))
-          .map((item) => item.productId)
-          .toSet()
-          .toList();
+      GoRouter.of(context).push('/searchrecipes');
+      return;
     }
+
+    // Otherwise search by selected ingredients
+    final ids = items
+        .where((item) => selectedIds.contains(item.id))
+        .map((item) => item.productId)
+        .toSet()
+        .toList();
 
     print("Selected pantry rows: $selectedIds");
     print("Sending product IDs: $ids");
 
     try {
-      final data = selectedIds.isEmpty
-          ? await RecipeService.getRecipesFromPantry()
-          : await RecipeService.getRecipesByIngredients(ids);
 
-      print("RAW API RESPONSE:");
-      print(data);
+      final data = await RecipeService.getRecipesByIngredients(ids);
 
       final recipes = data.map<Recipe>((e) => Recipe.fromJson(e)).toList();
-
-      print("Parsed Recipes: ${recipes.length}");
-
-      for (var r in recipes) {
-        print("Recipe: ${r.recipeName}");
-      }
 
       if (!mounted) return;
 
@@ -101,6 +93,7 @@ class _PantryPageState extends State<PantryPage> {
       GoRouter.of(context).push('/searchrecipes', extra: recipes);
 
     } catch (e, stack) {
+
       print("RECIPE ERROR:");
       print(e);
       print(stack);

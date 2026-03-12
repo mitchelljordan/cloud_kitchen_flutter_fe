@@ -1,13 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_kitchen_flutter_fe/models/recipe.dart';
+import 'package:cloud_kitchen_flutter_fe/core/services/recipe_services.dart';
 
-class SearchRecipePage extends StatelessWidget {
-  final List<Recipe> recipes;
+class SearchRecipePage extends StatefulWidget {
+  final List<Recipe>? recipes;
 
-  const SearchRecipePage({super.key, required this.recipes});
+  const SearchRecipePage({super.key, this.recipes});
+
+  @override
+  State<SearchRecipePage> createState() => _SearchRecipePageState();
+}
+
+class _SearchRecipePageState extends State<SearchRecipePage> {
+
+  List<Recipe> recipes = [];
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadRecipes();
+  }
+
+  Future<void> loadRecipes() async {
+
+    // If recipes were passed from ingredient search
+    if (widget.recipes != null) {
+      recipes = widget.recipes!;
+      setState(() {
+        loading = false;
+      });
+      return;
+    }
+
+    // Otherwise load pantry recipes
+    try {
+      final data = await RecipeService.getRecipesFromPantry();
+
+      recipes = data.map<Recipe>((e) => Recipe.fromJson(e)).toList();
+
+    } catch (e) {
+      debugPrint("Recipe load error: $e");
+    }
+
+    setState(() {
+      loading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    if (loading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
 
     if (recipes.isEmpty) {
       return Scaffold(
@@ -29,10 +77,11 @@ class SearchRecipePage extends StatelessWidget {
         itemCount: recipes.length,
 
         itemBuilder: (context, index) {
+
           final recipe = recipes[index];
 
           final totalIngredients =
-              recipe.ingredients.length == 0 ? 1 : recipe.ingredients.length;
+              recipe.ingredients.isEmpty ? 1 : recipe.ingredients.length;
 
           final matchPercent =
               ((recipe.inPantryCount / totalIngredients) * 100).round();
@@ -153,4 +202,3 @@ class SearchRecipePage extends StatelessWidget {
     );
   }
 }
-

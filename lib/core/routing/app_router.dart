@@ -99,7 +99,7 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/searchrecipes',
           builder: (context, state) {
-            final recipes = state.extra as List<Recipe>? ?? [];
+            final recipes = state.extra as List<Recipe>?;
             return SearchRecipePage(recipes: recipes);
           },
         ),
