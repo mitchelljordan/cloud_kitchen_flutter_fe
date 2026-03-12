@@ -33,11 +33,11 @@ class ScanPage extends StatelessWidget {
           Expanded(
             child: ElevatedButton(
               onPressed: () {
-                context.push('/createproduct');
-                debugPrint('Custom Product pressed');
+                context.push('/addpantryitem');
+                debugPrint('Add Pantry Item pressed');
               },
               child: const Text(
-                'Custom Product',
+                'Add Pantry Item',
                 style: TextStyle(fontSize: 24),
               ),
             ),

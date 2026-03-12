@@ -46,7 +46,6 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	/// Camera Stuff
 	<string>This app uses the camera to scan ingredients.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This app allows selecting images of ingredients.</string>

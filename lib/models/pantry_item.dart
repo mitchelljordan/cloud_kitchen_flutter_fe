@@ -10,4 +10,13 @@ class PantryItem {
     required this.quantity,
     required this.unit,
   });
+
+  factory PantryItem.fromJson(Map<String, dynamic> json) {
+    return PantryItem(
+      id: json["pantry_id"].toString(),
+      name: json["product_name"] ?? "Unknown",
+      quantity: (json["quantity"] ?? 0).toDouble(),
+      unit: json["unit"] ?? "",
+    );
+  }
 }

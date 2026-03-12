@@ -1,4 +1,4 @@
-import 'api_client.dart';
+import 'package:cloud_kitchen_flutter_fe/core/network/api_client.dart';
 
 class ProductService {
 
