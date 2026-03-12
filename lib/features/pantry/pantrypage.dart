@@ -61,27 +61,53 @@ class _PantryPageState extends State<PantryPage> {
     List<int> ids;
 
     if (selectedIds.isEmpty) {
-      ids = items.map((e) => int.parse(e.id)).toList();
+      ids = items.map((e) => e.productId).toSet().toList();
     } else {
-      ids = selectedIds.map((e) => int.parse(e)).toList();
+      ids = items
+          .where((item) => selectedIds.contains(item.id))
+          .map((item) => item.productId)
+          .toSet()
+          .toList();
     }
+
+    print("Selected pantry rows: $selectedIds");
+    print("Sending product IDs: $ids");
 
     try {
       final data = selectedIds.isEmpty
           ? await RecipeService.getRecipesFromPantry()
           : await RecipeService.getRecipesByIngredients(ids);
 
+      print("RAW API RESPONSE:");
+      print(data);
+
       final recipes = data.map<Recipe>((e) => Recipe.fromJson(e)).toList();
+
+      print("Parsed Recipes: ${recipes.length}");
+
+      for (var r in recipes) {
+        print("Recipe: ${r.recipeName}");
+      }
 
       if (!mounted) return;
 
-      GoRouter.of(context).push('/searchrecipes', extra: recipes);
-    } catch (e) {
-      print(e);
+      if (recipes.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("No recipes found for these ingredients")),
+        );
+        return;
+      }
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Failed to load recipes")));
+      GoRouter.of(context).push('/searchrecipes', extra: recipes);
+
+    } catch (e, stack) {
+      print("RECIPE ERROR:");
+      print(e);
+      print(stack);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Recipe error: $e")),
+      );
     }
   }
 

@@ -17,12 +17,12 @@ class Recipe {
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
     return Recipe(
-      recipeId: json["recipe_id"],
-      recipeName: json["recipe_name"],
-      servings: json["servings"],
-      missingCount: json["missing_count"],
-      inPantryCount: json["in_pantry_count"],
-      ingredients: json["ingredients_breakdown"],
+      recipeId: json["recipe_id"] ?? 0,
+      recipeName: json["recipe_name"] ?? "Unknown Recipe",
+      servings: json["servings"] ?? 0,
+      missingCount: json["missing_count"] ?? 0,
+      inPantryCount: json["in_pantry_count"] ?? 0,
+      ingredients: json["ingredients_breakdown"] ?? [],
     );
   }
 }
