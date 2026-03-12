@@ -41,4 +41,17 @@ class ApiClient {
       },
     );
   }
+
+  static Future<http.Response> put(String endpoint, Map body) async {
+    final token = await TokenStorage.getToken();
+
+    return http.put(
+      Uri.parse("$baseUrl$endpoint"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+      body: jsonEncode(body),
+    );
+  }
 }
