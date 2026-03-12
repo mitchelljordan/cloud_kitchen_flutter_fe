@@ -14,7 +14,7 @@ class PantryItem {
   factory PantryItem.fromJson(Map<String, dynamic> json) {
     return PantryItem(
       id: json["pantry_id"].toString(),
-      name: json["product_name"] ?? "Unknown",
+      name: json["product"]?["product_name"] ?? "Unknown",
       quantity: (json["quantity"] ?? 0).toDouble(),
       unit: json["unit"] ?? "",
     );

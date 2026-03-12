@@ -1,6 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:cloud_kitchen_flutter_fe/core/network/api_client.dart';
+import 'package:cloud_kitchen_flutter_fe/models/userpreferences.dart';
+import 'package:cloud_kitchen_flutter_fe/core/services/preferences_service.dart';
+import 'widgets/preference_switch.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -10,8 +11,27 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  Map<String, dynamic> prefs = {};
+  final PreferencesService service = PreferencesService();
+
+  Preferences? prefs;
   bool loading = true;
+
+  final Map<String, String> preferenceLabels = {
+    "nut_free": "Nut Free",
+    "dairy_free": "Dairy Free",
+    "low_sugar": "Low Sugar",
+    "low_carb": "Low Carb",
+    "low_sodium": "Low Sodium",
+    "low_sat_fat": "Low Saturated Fat",
+    "vegetarian": "Vegetarian",
+    "vegan": "Vegan",
+    "halal": "Halal",
+    "kosher": "Kosher",
+    "gluten_free": "Gluten Free",
+    "soy_free": "Soy Free",
+    "egg_free": "Egg Free",
+    "shellfish_free": "Shellfish Free",
+  };
 
   @override
   void initState() {
@@ -20,33 +40,24 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> loadPreferences() async {
-    final response = await ApiClient.get(
-      "/auth/users/1/preferences",
-    ); // replace with real userId
-
-    if (response.statusCode == 200) {
-      setState(() {
-        prefs = jsonDecode(response.body);
-        loading = false;
-      });
-    }
+    final result = await service.getPreferences(1); // replace later
+    setState(() {
+      prefs = result;
+      loading = false;
+    });
   }
 
-  Widget preferenceSwitch(String label, String key) {
-    return SwitchListTile(
-      title: Text(label),
-      value: prefs[key] ?? false,
-      onChanged: (value) {
-        setState(() {
-          prefs[key] = value;
-        });
-      },
-    );
+  void savePreferences() async {
+    await service.updatePreferences(1, prefs!);
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text("Preferences updated")));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (loading) {
+    if (loading || prefs == null) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -61,43 +72,31 @@ class _ProfilePageState extends State<ProfilePage> {
 
           const SizedBox(height: 20),
 
-          /// DROPDOWN SECTION
           ExpansionTile(
             title: const Text(
               "Dietary Preferences",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
-            children: [
-              preferenceSwitch("Nut Free", "nut_free"),
-              preferenceSwitch("Dairy Free", "dairy_free"),
-              preferenceSwitch("Low Sugar", "low_sugar"),
-              preferenceSwitch("Low Carb", "low_carb"),
-              preferenceSwitch("Low Sodium", "low_sodium"),
-              preferenceSwitch("Low Saturated Fat", "low_sat_fat"),
-              preferenceSwitch("Vegetarian", "vegetarian"),
-              preferenceSwitch("Vegan", "vegan"),
-              preferenceSwitch("Halal", "halal"),
-              preferenceSwitch("Kosher", "kosher"),
-              preferenceSwitch("Gluten Free", "gluten_free"),
-              preferenceSwitch("Soy Free", "soy_free"),
-              preferenceSwitch("Egg Free", "egg_free"),
-              preferenceSwitch("Shellfish Free", "shellfish_free"),
-            ],
+            children: preferenceLabels.entries.map((entry) {
+              final key = entry.key;
+              final label = entry.value;
+
+              return PreferenceSwitch(
+                label: label,
+                value: prefs!.values[key] ?? false,
+                onChanged: (val) {
+                  setState(() {
+                    prefs!.values[key] = val;
+                  });
+                },
+              );
+            }).toList(),
           ),
 
           const SizedBox(height: 20),
 
           ElevatedButton(
-            onPressed: () async {
-              await ApiClient.put(
-                "/auth/users/1/preferences", // replace with real userId
-                prefs,
-              );
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Preferences updated")),
-              );
-            },
+            onPressed: savePreferences,
             child: const Text("Save Preferences"),
           ),
         ],
