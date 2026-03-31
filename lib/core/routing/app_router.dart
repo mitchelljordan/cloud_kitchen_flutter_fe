@@ -14,6 +14,8 @@ import 'package:cloud_kitchen_flutter_fe/features/register/registerpage.dart';
 import 'package:cloud_kitchen_flutter_fe/core/services/token_storage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/scan/addpantryitem/addpantryitempage.dart';
 import 'package:cloud_kitchen_flutter_fe/features/recipe/searchrecipe/searchrecipepage.dart';
+import 'package:cloud_kitchen_flutter_fe/features/recipe/cook/cook_page.dart';
+import 'package:cloud_kitchen_flutter_fe/features/recipe/favourites/favourites_page.dart';
 
 /* 
 // Description: This is where all navagtion for the  page is defined.
@@ -102,6 +104,19 @@ final GoRouter appRouter = GoRouter(
             final recipes = state.extra as List<Recipe>?;
             return SearchRecipePage(recipes: recipes);
           },
+        ),
+
+        GoRoute(
+          path: '/cookpage',
+          builder: (context, state) {
+            final recipe = state.extra as Recipe;
+            return CookPage(recipe: recipe);
+          },
+        ),
+
+        GoRoute(
+          path: '/favourites',
+          builder: (context, state) => const FavouritesPage(),
         ),
       ],
     ),

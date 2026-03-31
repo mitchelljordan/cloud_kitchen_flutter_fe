@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import '../services/token_storage.dart';
 
 class ApiClient {
-  static const baseUrl = "http://10.0.2.2:8000";
+  static String get baseUrl => dotenv.env['BASE_URL'] ?? "http://10.0.2.2:8000";
 
   static Future<http.Response> get(String endpoint) async {
     final token = await TokenStorage.getToken();

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../../models/pantry_item.dart';
+import 'pantry_item_tile.dart';
 
 class PantryList extends StatelessWidget {
   final List<PantryItem> items;
   final Function(String) onDelete;
+  final Function(String) onEdit;
   final Function(String) onSelect;
   final Set<String> selectedIds;
 
@@ -11,6 +13,7 @@ class PantryList extends StatelessWidget {
     super.key,
     required this.items,
     required this.onDelete,
+    required this.onEdit,
     required this.onSelect,
     required this.selectedIds,
   });
@@ -23,24 +26,36 @@ class PantryList extends StatelessWidget {
         final item = items[index];
         final selected = selectedIds.contains(item.id);
 
-        return ListTile(
-          tileColor: selected ? Colors.lightBlue.withOpacity(0.2) : null,
-
-          title: Text(item.name),
-
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
+        return GestureDetector(
+          onTap: () => onSelect(item.id),
+          child: Stack(
             children: [
-              Icon(selected ? Icons.check_box : Icons.check_box_outline_blank),
-
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () => onDelete(item.id),
+              PantryItemTile(
+                item: item,
+                onDelete: () => onDelete(item.id),
+                onEdit: () => onEdit(item.id),
               ),
+              if (selected)
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlue.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.check_circle,
+                          color: Colors.blue.shade700,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
             ],
           ),
-
-          onTap: () => onSelect(item.id),
         );
       },
     );

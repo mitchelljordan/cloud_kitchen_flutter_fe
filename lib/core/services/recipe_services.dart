@@ -25,4 +25,37 @@ class RecipeService {
       throw Exception('Failed to fetch recipes by ingredients');
     }
   }
+
+  // GET favourite recipes
+  static Future<List<dynamic>> getFavouriteRecipes() async {
+    final res = await ApiClient.get("/recipes/favourites");
+
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body);
+    } else {
+      throw Exception('Failed to fetch favourite recipes');
+    }
+  }
+
+  // POST add recipe to favourites
+  static Future<bool> addFavourite(int recipeId) async {
+    final res = await ApiClient.post("/recipes/favourites/$recipeId", {});
+
+    if (res.statusCode == 201 || res.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to add recipe to favourites');
+    }
+  }
+
+  // DELETE remove recipe from favourites
+  static Future<bool> removeFavourite(int recipeId) async {
+    final res = await ApiClient.delete("/recipes/favourites/$recipeId");
+
+    if (res.statusCode == 204 || res.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to remove recipe from favourites');
+    }
+  }
 }

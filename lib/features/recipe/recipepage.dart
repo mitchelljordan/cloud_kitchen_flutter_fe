@@ -14,6 +14,7 @@ class RecipePage extends StatelessWidget {
           Expanded(
             child: ElevatedButton(
               onPressed: () {
+                context.go('/favourites');
                 debugPrint('Favorite Recipes pressed');
               },
               child: const Text(

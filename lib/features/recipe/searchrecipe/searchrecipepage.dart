@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_kitchen_flutter_fe/models/recipe.dart';
 import 'package:cloud_kitchen_flutter_fe/core/services/recipe_services.dart';
+import 'package:go_router/go_router.dart';
 
 class SearchRecipePage extends StatefulWidget {
   final List<Recipe>? recipes;
@@ -12,7 +13,6 @@ class SearchRecipePage extends StatefulWidget {
 }
 
 class _SearchRecipePageState extends State<SearchRecipePage> {
-
   List<Recipe> recipes = [];
   bool loading = true;
 
@@ -23,7 +23,6 @@ class _SearchRecipePageState extends State<SearchRecipePage> {
   }
 
   Future<void> loadRecipes() async {
-
     // If recipes were passed from ingredient search
     if (widget.recipes != null) {
       recipes = widget.recipes!;
@@ -38,7 +37,6 @@ class _SearchRecipePageState extends State<SearchRecipePage> {
       final data = await RecipeService.getRecipesFromPantry();
 
       recipes = data.map<Recipe>((e) => Recipe.fromJson(e)).toList();
-
     } catch (e) {
       debugPrint("Recipe load error: $e");
     }
@@ -50,11 +48,8 @@ class _SearchRecipePageState extends State<SearchRecipePage> {
 
   @override
   Widget build(BuildContext context) {
-
     if (loading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     if (recipes.isEmpty) {
@@ -77,22 +72,24 @@ class _SearchRecipePageState extends State<SearchRecipePage> {
         itemCount: recipes.length,
 
         itemBuilder: (context, index) {
-
           final recipe = recipes[index];
 
-          final totalIngredients =
-              recipe.ingredients.isEmpty ? 1 : recipe.ingredients.length;
+          final totalIngredients = recipe.ingredients.isEmpty
+              ? 1
+              : recipe.ingredients.length;
 
-          final matchPercent =
-              ((recipe.inPantryCount / totalIngredients) * 100).round();
+          final matchPercent = ((recipe.inPantryCount / totalIngredients) * 100)
+              .round();
 
           return Card(
             margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             elevation: 3,
 
             child: ExpansionTile(
-              tilePadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              tilePadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 4,
+              ),
 
               title: Text(
                 recipe.recipeName,
@@ -108,7 +105,6 @@ class _SearchRecipePageState extends State<SearchRecipePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     Text(
                       "Pantry Match: $matchPercent%",
                       style: TextStyle(
@@ -129,6 +125,15 @@ class _SearchRecipePageState extends State<SearchRecipePage> {
                 ),
               ),
 
+              trailing: PopupMenuButton(
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: const Text("Cook Recipe"),
+                    onTap: () => context.push('/cookpage', extra: recipe),
+                  ),
+                ],
+              ),
+
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -137,7 +142,6 @@ class _SearchRecipePageState extends State<SearchRecipePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
 
                     children: [
-
                       Text(
                         "Servings: ${recipe.servings}",
                         style: const TextStyle(fontWeight: FontWeight.w500),
@@ -155,35 +159,28 @@ class _SearchRecipePageState extends State<SearchRecipePage> {
 
                       const SizedBox(height: 8),
 
-                      ...recipe.ingredients.map((i) {
-
-                        final status = i["status"] ?? "unknown";
-
+                      ...recipe.ingredients.map((ing) {
                         return ListTile(
                           dense: true,
                           contentPadding: EdgeInsets.zero,
 
                           leading: Icon(
-                            status == "missing"
+                            ing.status == "missing"
                                 ? Icons.cancel
                                 : Icons.check_circle,
-                            color: status == "missing"
+                            color: ing.status == "missing"
                                 ? Colors.red
                                 : Colors.green,
                           ),
 
-                          title: Text(
-                            i["product_name"] ?? "Unknown ingredient",
-                          ),
+                          title: Text(ing.productName),
 
-                          subtitle: Text(
-                            "${i["amount"] ?? 0} ${i["unit"] ?? ""}",
-                          ),
+                          subtitle: Text("${ing.amount} ${ing.unit}"),
 
                           trailing: Text(
-                            status,
+                            ing.status,
                             style: TextStyle(
-                              color: status == "missing"
+                              color: ing.status == "missing"
                                   ? Colors.red
                                   : Colors.green,
                               fontWeight: FontWeight.w600,
@@ -191,6 +188,50 @@ class _SearchRecipePageState extends State<SearchRecipePage> {
                           ),
                         );
                       }).toList(),
+
+                      const SizedBox(height: 16),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton.icon(
+                            onPressed: () =>
+                                context.push('/cookpage', extra: recipe),
+                            icon: const Icon(Icons.restaurant_menu),
+                            label: const Text("Cook"),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              recipe.isFavourite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: recipe.isFavourite
+                                  ? Colors.red
+                                  : Colors.grey,
+                            ),
+                            onPressed: () async {
+                              try {
+                                if (recipe.isFavourite) {
+                                  await RecipeService.removeFavourite(
+                                    recipe.recipeId,
+                                  );
+                                } else {
+                                  await RecipeService.addFavourite(
+                                    recipe.recipeId,
+                                  );
+                                }
+                                setState(() {
+                                  recipe.isFavourite = !recipe.isFavourite;
+                                });
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Error: $e")),
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),

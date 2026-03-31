@@ -4,6 +4,7 @@ class PantryItem {
   final String name;
   final double quantity;
   final String unit;
+  final String expiryDate;
 
   PantryItem({
     required this.id,
@@ -11,6 +12,7 @@ class PantryItem {
     required this.name,
     required this.quantity,
     required this.unit,
+    required this.expiryDate,
   });
 
   factory PantryItem.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class PantryItem {
       name: json["product"]?["product_name"] ?? "Unknown",
       quantity: (json["quantity"] ?? 0).toDouble(),
       unit: json["unit"] ?? "",
+      expiryDate: json["expiry_date"] ?? "",
     );
   }
 }
